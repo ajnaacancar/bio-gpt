@@ -79,7 +79,7 @@ function App() {
               placeholder="Enter your message..."
               className="p-2 text-lg outline-none border-b w-[75%]"
             />
-            <button className="p-2 bg-blue-400 text-white rounded-lg">
+            <button disabled={message === ""}  className="p-2 bg-blue-400 text-white rounded-lg">
               Send
             </button>
           </div>
