@@ -6,8 +6,7 @@ const initialState = {
   isSuccess: false,
   messages: [],
   message: {},
-  isLoading: false,
-  allMessages: []
+  isLoading: false
 };
 
 export const sendMessage = createAsyncThunk(
