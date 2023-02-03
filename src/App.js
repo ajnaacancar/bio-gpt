@@ -1,91 +1,44 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "./features/chat/chatSlice";
+import { useState } from "react";
+import BioChat from "./components/BioChat";
+import Chat from "./components/Chat";
 
 function App() {
-  const {
-    isLoading,
-    messages: bioMessages,
-    isSuccess,
-  } = useSelector((state) => state.chat);
-  const [messages, setMessages] = useState([
-    {
-      customer_message: "Here is bio chat, type your term for completion...",
-    },
-  ]);
-  const [message, setMessage] = useState("");
-  const messageEndRef = useRef(null);
-  const dispatch = useDispatch();
-
-  const scrollToBottom = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      const tempMessags = [...messages, ...bioMessages];
-      setMessages(tempMessags);
-    }
-
-    scrollToBottom();
-  }, [bioMessages]);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    dispatch(sendMessage(message));
-    const temp = {
-      customer_message: message,
-    };
-    setMessages([...messages, temp]);
-    setMessage("");
-  };
-
+  const [isFirst, setIsFirst] = useState(true);
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <div className="border-2 border-blue-400">
-        <div className="overflow-y-scroll h-[600px] sm:w-[600px] px-2 scroll-mb-0 relative">
-          {messages &&
-            messages.map((mess, i) => (
-              <div key={i}>
-                {mess && mess.customer_message && (
-                  <div className="flex justify-end w-full my-2">
-                    <div className="w-[70%] bg-blue-400  p-4 rounded-xl">
-                      {mess.customer_message}
-                    </div>
-                  </div>
-                )}
-
-                {mess && mess.generated_text && (
-                  <div className="flex justify-start w-full my-2">
-                    <div className="w-[70%] bg-gray-400  p-4 rounded-xl">
-                      {mess.generated_text}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-
-          {isLoading && <p>Text completion ...</p>}
-
-          <div ref={messageEndRef} />
-        </div>
-
-        <form onSubmit={onSubmit} className="space-x-4 items-center">
-          <div className="flex justify-center items-center space-x-5 mb-2">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Enter your message..."
-              className="p-2 text-lg outline-none border-b w-[75%]"
-            />
-            <button disabled={message === ""}  className="p-2 bg-blue-400 text-white rounded-lg">
-              Send
-            </button>
+    <>
+      <div className="w-full h-screen flex justify-center items-center">
+        <div>
+          <div className="max-w-2xl mx-auto">
+            <div className="border-b border-gray-200 dark:border-gray-700 mb-4">
+              <ul className="flex flex-wrap -mb-px">
+                <li className="mr-2" role="presentation">
+                  <button
+                    onClick={() => setIsFirst(true)}
+                    className={`inline-block text-gray-500 hover:text-blue-600 hover:border-blue-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300 ${
+                      isFirst && "text-blue-700 font-bold border-blue-700"
+                    }`}
+                  >
+                    Generate
+                  </button>
+                </li>
+                <li className="mr-2" role="presentation">
+                  <button
+                    onClick={() => setIsFirst(false)}
+                    className={`inline-block text-gray-500 hover:text-red-600 hover:border-red-300 rounded-t-lg py-4 px-4 text-sm font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300 active ${
+                      !isFirst && "text-red-700 font-bold border-red-700"
+                    }`}
+                  >
+                    Beam
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
-        </form>
+
+          {isFirst ? <BioChat /> : <Chat />}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
