@@ -35,7 +35,15 @@ function App() {
             </div>
           </div>
 
-          {isFirst ? <BioChat /> : <Chat />}
+         <div>
+          <div className={` ${isFirst ? 'visibel' : 'hidden'}`}>
+            <BioChat />
+          </div>
+
+          <div className={` ${!isFirst ? 'visibel' : 'hidden'}`}>
+            <Chat />
+          </div>
+         </div>
         </div>
       </div>
     </>

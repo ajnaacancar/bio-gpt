@@ -26,13 +26,11 @@ function Chat() {
       const tempMessags = [...messages, bioMessage];
       setMessages(tempMessags);
     }
-
- 
   }, [bioMessage]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages])
+  }, [messages]);
 
   const onSubmit = (e) => {
     e.preventDefault();
